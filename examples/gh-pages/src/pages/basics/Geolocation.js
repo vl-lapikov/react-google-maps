@@ -53,7 +53,7 @@ export default class Geolocation extends Component {
           lat: 60,
           lng: 105,
         },
-        content: `Error: The Geolocation service failed (${ reason }).`,
+        content: `Error: The Geolocation service failed (${reason}).`,
       });
     });
   }

@@ -1,3 +1,4 @@
+import { default as omit } from "lodash/omit";
 import { default as React, Component } from "react";
 import { default as update } from "react-addons-update";
 
@@ -28,7 +29,7 @@ function geometryToComponentWithLatLng(geometry) {
         position: coordinates,
       };
     default:
-      throw new TypeError(`Unknown geometry type: ${ type }`);
+      throw new TypeError(`Unknown geometry type: ${type}`);
   }
 }
 
@@ -110,7 +111,10 @@ export default class GeojsonToComponents extends Component {
 
   handleMarkerDragend({ latLng }) {
     const marker = this.state.geoJson.features[1];
-    const originalCoordinates = marker.properties.originalCoordinates || marker.geometry.coordinates;
+    const originalCoordinates = (
+      marker.properties.originalCoordinates ||
+      marker.geometry.coordinates
+    );
     const newCoordinates = [latLng.lng(), latLng.lat()];
 
     this.setState(update(this.state, {
@@ -130,13 +134,13 @@ export default class GeojsonToComponents extends Component {
           },
           4: {
             $set: {
-              "type": `Feature`,
-              "id": 4,
-              "geometry": {
-                "type": `LineString`,
-                "coordinates": [originalCoordinates, newCoordinates],
+              type: `Feature`,
+              id: 4,
+              geometry: {
+                type: `LineString`,
+                coordinates: [originalCoordinates, newCoordinates],
               },
-              "properties": {
+              properties: {
               },
             },
           },
@@ -147,7 +151,6 @@ export default class GeojsonToComponents extends Component {
 
   render() {
     const { props, state } = this;
-    const { googleMapsApi, ...otherProps } = props;
     const { geoStateBy } = state;
     const { features } = state.geoJson;
     const mapFeature = features[0];
@@ -157,7 +160,7 @@ export default class GeojsonToComponents extends Component {
     return (
       <GoogleMap
         containerProps={{
-          ...otherProps,
+          ...this.props,
           style: {
             height: `100%`,
           },
@@ -171,11 +174,20 @@ export default class GeojsonToComponents extends Component {
             return array;
           }
           const { properties } = feature;
-          const { ElementClass, ChildElementClass, ...geometry } = geometryToComponentWithLatLng(feature.geometry);
+          const {
+            ElementClass,
+            ChildElementClass,
+            ...geometry,
+          } = geometryToComponentWithLatLng(feature.geometry);
           const { visible, child, ...featureState } = geoStateBy[feature.id] || {};
           if (visible !== false) {
             array.push(
-              <ElementClass key={`json-${feature.id}`} {...properties} {...geometry} {...featureState}>
+              <ElementClass
+                key={`json-${feature.id}`}
+                {...properties}
+                {...geometry}
+                {...featureState}
+              >
                 {child ? <ChildElementClass {...child} /> : null}
               </ElementClass>
             );
