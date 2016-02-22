@@ -60,13 +60,21 @@ export default class MarkerClusterer extends Component {
   getZoomOnClick() { return this.state.markerClusterer.getZoomOnClick(); }
 
   // Public APIs - Use this carefully
-  addMarker(marker, nodraw = false) { return this.state.markerClusterer.addMarker(marker, nodraw); }
+  addMarker(marker, nodraw = false) {
+    return this.state.markerClusterer.addMarker(marker, nodraw);
+  }
 
-  addMarkers(markers, nodraw = false) { return this.state.markerClusterer.addMarkers(markers, nodraw); }
+  addMarkers(markers, nodraw = false) {
+    return this.state.markerClusterer.addMarkers(markers, nodraw);
+  }
 
-  removeMarker(marker, nodraw = false) { return this.state.markerClusterer.removeMarker(marker, nodraw); }
+  removeMarker(marker, nodraw = false) {
+    return this.state.markerClusterer.removeMarker(marker, nodraw);
+  }
 
-  removeMarkers(markers, nodraw = false) { return this.state.markerClusterer.removeMarkers(markers, nodraw); }
+  removeMarkers(markers, nodraw = false) {
+    return this.state.markerClusterer.removeMarkers(markers, nodraw);
+  }
 
   clearMarkers() { return this.state.markerClusterer.clearMarkers(); }
 
@@ -82,7 +90,10 @@ export default class MarkerClusterer extends Component {
     }
 
     const { mapHolderRef, ...markerClustererProps } = this.props;
-    const markerClusterer = MarkerClustererCreator._createMarkerClusterer(mapHolderRef, markerClustererProps);
+    const markerClusterer = MarkerClustererCreator._createMarkerClusterer(
+      mapHolderRef,
+      markerClustererProp
+    );
 
     this.setState({ markerClusterer });
   }

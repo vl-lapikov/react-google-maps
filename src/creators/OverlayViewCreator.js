@@ -28,7 +28,8 @@ export const overlayViewControlledPropTypes = {
 //
 // Only expose those with getters & setters in the table as controlled props.
 //
-// [].map.call($0.querySelectorAll("tr>td>code"), function(it){ return it.textContent; }).filter(function(it){ return it.match(/^set/) && !it.match(/^setMap/); })
+// [].map.call($0.querySelectorAll("tr>td>code"), function(it){ return it.textContent; })
+//    .filter(function(it){ return it.match(/^set/) && !it.match(/^setMap/); })
 //
 // https://developers.google.com/maps/documentation/javascript/3.exp/reference
 };
@@ -84,7 +85,11 @@ export default class OverlayViewCreator extends Component {
 
     overlayView._mountContainerToPane = function _mountContainerToPane() {
       const mapPaneName = this.get(`mapPaneName`);
-      invariant(!!mapPaneName, `OverlayView requires a mapPaneName/defaultMapPaneName in your props instead of %s`, mapPaneName);
+      invariant(
+        !!mapPaneName,
+`OverlayView requires a mapPaneName/defaultMapPaneName in your props instead of %s`,
+        mapPaneName
+      );
 
       this.getPanes()[mapPaneName].appendChild(this._containerElement);
     };
@@ -105,10 +110,10 @@ export default class OverlayViewCreator extends Component {
             sw.x += offset.x;
             ne.y += offset.y;
           }
-          left = sw.x + `px`;
-          top = ne.y + `px`;
-          this._containerElement.style.width = (ne.x - sw.x) + `px`;
-          this._containerElement.style.height = (sw.y - ne.y) + `px`;
+          left = `${sw.x}px`;
+          top = `${ne.y}px`;
+          this._containerElement.style.width = `${ne.x - sw.x}px`;
+          this._containerElement.style.height = `${sw.y - ne.y}px`;
         }
       } else {
         const position = this._getPixelPosition();
@@ -118,8 +123,8 @@ export default class OverlayViewCreator extends Component {
             x += offset.x;
             y += offset.y;
           }
-          left = x + `px`;
-          top = y + `px`;
+          left = `${x}px`;
+          top = `${y}px`;
         }
       }
 
@@ -130,7 +135,11 @@ export default class OverlayViewCreator extends Component {
     overlayView._getPixelPosition = function _getPixelPosition() {
       const projection = this.getProjection();
       let position = this.get(`position`);
-      invariant(!!position, `OverlayView requires a position/defaultPosition in your props instead of %s`, position);
+      invariant(
+        !!position,
+`OverlayView requires a position/defaultPosition in your props instead of %s`,
+        position
+      );
       if (projection && position) {
         if (!(position instanceof google.maps.LatLng)) {
           position = new google.maps.LatLng(position.lat, position.lng);

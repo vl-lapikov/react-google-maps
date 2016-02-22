@@ -18,7 +18,8 @@ export const markerControlledPropTypes = {
 //
 // Only expose those with getters & setters in the table as controlled props.
 //
-// [].map.call($0.querySelectorAll("tr>td>code", function(it){ return it.textContent; }).filter(function(it){ return it.match(/^set/) && !it.match(/^setMap/); })
+// [].map.call($0.querySelectorAll("tr>td>code", function(it){ return it.textContent; })
+//    .filter(function(it){ return it.match(/^set/) && !it.match(/^setMap/); })
 //
 // https://developers.google.com/maps/documentation/javascript/3.exp/reference#Marker
   animation: PropTypes.any,
@@ -62,12 +63,7 @@ const { eventPropTypes, registerEvents } = eventHandlerCreator(MarkerEventList);
 
 export const markerEventPropTypes = eventPropTypes;
 
-@componentLifecycleDecorator({
-  registerEvents,
-  instanceMethodName: `getMarker`,
-  updaters: markerUpdaters,
-})
-export default class MarkerCreator extends Component {
+class MarkerCreator extends Component {
 
   static propTypes = {
     mapHolderRef: PropTypes.instanceOf(GoogleMapHolder).isRequired,
@@ -117,3 +113,9 @@ export default class MarkerCreator extends Component {
     }
   }
 }
+
+export default componentLifecycleDecorator({
+  registerEvents,
+  instanceMethodName: `getMarker`,
+  updaters: markerUpdaters,
+})(MarkerCreator);

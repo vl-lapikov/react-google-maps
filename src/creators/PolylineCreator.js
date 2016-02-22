@@ -17,7 +17,8 @@ export const polylineControlledPropTypes = {
 //
 // Only expose those with getters & setters in the table as controlled props.
 //
-// [].map.call($0.querySelectorAll("tr>td>code"), function(it){ return it.textContent; }).filter(function(it){ return it.match(/^set/) && !it.match(/^setMap/); })
+// [].map.call($0.querySelectorAll("tr>td>code"), function(it){ return it.textContent; })
+//    .filter(function(it){ return it.match(/^set/) && !it.match(/^setMap/); })
 //
 // https://developers.google.com/maps/documentation/javascript/3.exp/reference#Polyline
   draggable: PropTypes.bool,
@@ -41,12 +42,7 @@ const { eventPropTypes, registerEvents } = eventHandlerCreator(PolylineEventList
 
 export const polylineEventPropTypes = eventPropTypes;
 
-@componentLifecycleDecorator({
-  registerEvents,
-  instanceMethodName: `getPolyline`,
-  updaters: polylineUpdaters,
-})
-export default class PolylineCreator extends Component {
+class PolylineCreator extends Component {
 
   static propTypes = {
     mapHolderRef: PropTypes.instanceOf(GoogleMapHolder).isRequired,
@@ -56,7 +52,9 @@ export default class PolylineCreator extends Component {
   static _createPolyline(polylineProps) {
     const { mapHolderRef } = polylineProps;
     // https://developers.google.com/maps/documentation/javascript/3.exp/reference#Polyline
-    const polyline = new google.maps.Polyline(composeOptions(polylineProps, polylineControlledPropTypes));
+    const polyline = new google.maps.Polyline(
+      composeOptions(polylineProps, polylineControlledPropTypes)
+    );
 
     polyline.setMap(mapHolderRef.getMap());
 
@@ -71,3 +69,9 @@ export default class PolylineCreator extends Component {
     return (<noscript />);
   }
 }
+
+export default componentLifecycleDecorator({
+  registerEvents,
+  instanceMethodName: `getPolyline`,
+  updaters: polylineUpdaters,
+})(PolylineCreator);

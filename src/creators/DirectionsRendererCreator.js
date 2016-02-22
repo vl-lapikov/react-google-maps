@@ -18,7 +18,8 @@ export const directionsRendererControlledPropTypes = {
 //
 // Only expose those with getters & setters in the table as controlled props.
 //
-// [].map.call($0.querySelectorAll("tr>td>code"), function(it){ return it.textContent; }).filter(function(it){ return it.match(/^set/) && !it.match(/^setMap/); })
+// [].map.call($0.querySelectorAll("tr>td>code"), function(it){ return it.textContent; })
+//    .filter(function(it){ return it.match(/^set/) && !it.match(/^setMap/); })
 //
 // https://developers.google.com/maps/documentation/javascript/3.exp/reference#DirectionsRenderer
   directions: PropTypes.any,
@@ -27,25 +28,26 @@ export const directionsRendererControlledPropTypes = {
   routeIndex: PropTypes.number,
 };
 
-export const directionsRendererDefaultPropTypes = defaultPropsCreator(directionsRendererControlledPropTypes);
+export const directionsRendererDefaultPropTypes = defaultPropsCreator(
+  directionsRendererControlledPropTypes
+);
 
 const directionsRendererUpdaters = {
-  directions(directions, component) { component.getDirectionsRenderer().setDirections(directions); },
+  directions(directions, component) {
+    component.getDirectionsRenderer().setDirections(directions);
+  },
   options(options, component) { component.getDirectionsRenderer().setOptions(options); },
   panel(panel, component) { component.getDirectionsRenderer().setPanel(panel); },
-  routeIndex(routeIndex, component) { component.getDirectionsRenderer().setRouteIndex(routeIndex); },
+  routeIndex(routeIndex, component) {
+    component.getDirectionsRenderer().setRouteIndex(routeIndex);
+  },
 };
 
 const { eventPropTypes, registerEvents } = eventHandlerCreator(DirectionsRendererEventList);
 
 export const directionsRendererEventPropTypes = eventPropTypes;
 
-@componentLifecycleDecorator({
-  registerEvents,
-  instanceMethodName: `getDirectionsRenderer`,
-  updaters: directionsRendererUpdaters,
-})
-export default class DirectionsRendererCreator extends Component {
+class DirectionsRendererCreator extends Component {
 
   static propTypes = {
     mapHolderRef: PropTypes.instanceOf(GoogleMapHolder).isRequired,
@@ -55,7 +57,9 @@ export default class DirectionsRendererCreator extends Component {
   static _createDirectionsRenderer(directionsRendererProps) {
     const { mapHolderRef } = directionsRendererProps;
     // https://developers.google.com/maps/documentation/javascript/3.exp/reference#DirectionsRenderer
-    const directionsRenderer = new google.maps.DirectionsRenderer(composeOptions(directionsRendererProps, directionsRendererControlledPropTypes));
+    const directionsRenderer = new google.maps.DirectionsRenderer(
+      composeOptions(directionsRendererProps, directionsRendererControlledPropTypes)
+    );
 
     directionsRenderer.setMap(mapHolderRef.getMap());
 
@@ -70,7 +74,8 @@ export default class DirectionsRendererCreator extends Component {
     const { children } = this.props;
 
     if (Children.count(children) > 0) {
-      // TODO: take a look at DirectionsRendererOptions#infoWindow and DirectionsRendererOptions#markerOptions ?
+      // TODO: take a look at DirectionsRendererOptions#infoWindow and
+      // DirectionsRendererOptions#markerOptions ?
       return (
         <div>{children}</div>
       );
@@ -79,3 +84,9 @@ export default class DirectionsRendererCreator extends Component {
     }
   }
 }
+
+export default componentLifecycleDecorator({
+  registerEvents,
+  instanceMethodName: `getDirectionsRenderer`,
+  updaters: directionsRendererUpdaters,
+})(DirectionsRendererCreator);

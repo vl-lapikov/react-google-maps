@@ -17,7 +17,8 @@ export const circleControlledPropTypes = {
 //
 // Only expose those with getters & setters in the table as controlled props.
 //
-// [].map.call($0.querySelectorAll("tr>td>code"), function(it){ return it.textContent; }).filter(function(it){ return it.match(/^set/) && !it.match(/^setMap/); })
+// [].map.call($0.querySelectorAll("tr>td>code"), function(it){ return it.textContent; })
+//    .filter(function(it){ return it.match(/^set/) && !it.match(/^setMap/); })
 //
 // https://developers.google.com/maps/documentation/javascript/3.exp/reference#Circle
   center: PropTypes.any,
@@ -43,12 +44,7 @@ const { eventPropTypes, registerEvents } = eventHandlerCreator(CircleEventList);
 
 export const circleEventPropTypes = eventPropTypes;
 
-@componentLifecycleDecorator({
-  registerEvents,
-  instanceMethodName: `getCircle`,
-  updaters: circleUpdaters,
-})
-export default class CircleCreator extends Component {
+class CircleCreator extends Component {
 
   static propTypes = {
     mapHolderRef: PropTypes.instanceOf(GoogleMapHolder).isRequired,
@@ -73,3 +69,9 @@ export default class CircleCreator extends Component {
     return (<noscript />);
   }
 }
+
+export default componentLifecycleDecorator({
+  registerEvents,
+  instanceMethodName: `getCircle`,
+  updaters: circleUpdaters,
+})(CircleCreator);

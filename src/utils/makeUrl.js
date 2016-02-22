@@ -8,7 +8,7 @@ import {
 
 import {
   default as isEqual,
-} from "lodash.isequal";
+} from "lodash/isEqual";
 
 export default function makeUrl(urlObj) {
   return formatUrlObj({

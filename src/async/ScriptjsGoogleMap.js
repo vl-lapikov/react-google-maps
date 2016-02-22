@@ -19,7 +19,8 @@ export default class ScriptjsGoogleMap extends Component {
 
   componentWillMount() {
     warning(false,
-`"async/ScriptjsGoogleMap" is deprecated now and will be removed in next major release (5.0.0). Use "async/ScriptjsLoader" instead.
+`"async/ScriptjsGoogleMap" is deprecated now and will be removed in next major release (5.0.0).
+Use "async/ScriptjsLoader" instead.
 See https://github.com/tomchentw/react-google-maps/pull/150 for more details.`
     );
   }

@@ -8,7 +8,11 @@ import { default as InfoWindowEventList } from "../eventLists/InfoWindowEventLis
 import { default as eventHandlerCreator } from "../utils/eventHandlerCreator";
 import { default as defaultPropsCreator } from "../utils/defaultPropsCreator";
 import { default as composeOptions } from "../utils/composeOptions";
-import { default as setContentForOptionalReactElement } from "../utils/setContentForOptionalReactElement";
+
+import {
+  default as setContentForOptionalReactElement,
+} from "../utils/setContentForOptionalReactElement";
+
 import { default as componentLifecycleDecorator } from "../utils/componentLifecycleDecorator";
 
 import { default as GoogleMapHolder } from "./GoogleMapHolder";
@@ -18,7 +22,8 @@ export const infoWindowControlledPropTypes = {
 //
 // Only expose those with getters & setters in the table as controlled props.
 //
-// [].map.call($0.querySelectorAll("tr>td>code"), function(it){ return it.textContent; }).filter(function(it){ return it.match(/^set/) && !it.match(/^setMap/); })
+// [].map.call($0.querySelectorAll("tr>td>code"), function(it){ return it.textContent; })
+//    .filter(function(it){ return it.match(/^set/) && !it.match(/^setMap/); })
 //
 // https://developers.google.com/maps/documentation/javascript/3.exp/reference#InfoWindow
   content: PropTypes.any,
@@ -30,7 +35,9 @@ export const infoWindowControlledPropTypes = {
 export const infoWindowDefaultPropTypes = defaultPropsCreator(infoWindowControlledPropTypes);
 
 const infoWindowUpdaters = {
-  children(children, component) { setContentForOptionalReactElement(children, component.getInfoWindow()); },
+  children(children, component) {
+    setContentForOptionalReactElement(children, component.getInfoWindow());
+  },
   content(content, component) { component.getInfoWindow().setContent(content); },
   options(options, component) { component.getInfoWindow().setOptions(options); },
   position(position, component) { component.getInfoWindow().setPosition(position); },
@@ -41,12 +48,7 @@ const { eventPropTypes, registerEvents } = eventHandlerCreator(InfoWindowEventLi
 
 export const infoWindowEventPropTypes = eventPropTypes;
 
-@componentLifecycleDecorator({
-  registerEvents,
-  instanceMethodName: `getInfoWindow`,
-  updaters: infoWindowUpdaters,
-})
-export default class InfoWindowCreator extends Component {
+class InfoWindowCreator extends Component {
 
   static propTypes = {
     mapHolderRef: PropTypes.instanceOf(GoogleMapHolder).isRequired,
@@ -57,7 +59,9 @@ export default class InfoWindowCreator extends Component {
   static _createInfoWindow(infoWindowProps) {
     const { mapHolderRef, anchorHolderRef } = infoWindowProps;
     // https://developers.google.com/maps/documentation/javascript/3.exp/reference#InfoWindow
-    const infoWindow = new google.maps.InfoWindow(composeOptions(infoWindowProps, infoWindowControlledPropTypes));
+    const infoWindow = new google.maps.InfoWindow(
+      composeOptions(infoWindowProps, infoWindowControlledPropTypes)
+    );
 
     if (infoWindowProps.children) {
       setContentForOptionalReactElement(infoWindowProps.children, infoWindow);
@@ -80,3 +84,9 @@ export default class InfoWindowCreator extends Component {
     return (<noscript />);
   }
 }
+
+export default componentLifecycleDecorator({
+  registerEvents,
+  instanceMethodName: `getInfoWindow`,
+  updaters: infoWindowUpdaters,
+})(InfoWindowCreator);

@@ -1,4 +1,6 @@
-export default function componentLifecycleDecorator({ registerEvents, instanceMethodName, updaters }) {
+export default function componentLifecycleDecorator(
+  { registerEvents, instanceMethodName, updaters }
+) {
   // This modify the Component.prototype directly
   return (Component) => {
     function register() {
@@ -19,9 +21,21 @@ export default function componentLifecycleDecorator({ registerEvents, instanceMe
     function noop() {}
 
     // Stash component's own lifecycle methods to be invoked later
-    const componentDidMount = Component.prototype.hasOwnProperty(`componentDidMount`) ? Component.prototype.componentDidMount : noop;
-    const componentDidUpdate = Component.prototype.hasOwnProperty(`componentDidUpdate`) ? Component.prototype.componentDidUpdate : noop;
-    const componentWillUnmount = Component.prototype.hasOwnProperty(`componentWillUnmount`) ? Component.prototype.componentWillUnmount : noop;
+    const componentDidMount = (
+      Component.prototype.hasOwnProperty(`componentDidMount`) ?
+      Component.prototype.componentDidMount :
+      noop
+    );
+    const componentDidUpdate = (
+      Component.prototype.hasOwnProperty(`componentDidUpdate`) ?
+      Component.prototype.componentDidUpdate :
+      noop
+    );
+    const componentWillUnmount = (
+      Component.prototype.hasOwnProperty(`componentWillUnmount`) ?
+      Component.prototype.componentWillUnmount :
+      noop
+    );
 
     Object.defineProperty(Component.prototype, `componentDidMount`, {
       enumerable: false,
