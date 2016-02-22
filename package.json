@@ -93,7 +93,7 @@
     "can-use-dom": "^0.1.0",
     "google-maps-infobox": "^1.1.13",
     "invariant": "^2.2.0",
-    "lodash.isequal": "^4.1.0",
+    "lodash": "^4.5.1",
     "marker-clusterer-plus": "^2.1.2",
     "react-prop-types-element-of-type": "^2.0.0",
     "scriptjs": "^2.5.8",
